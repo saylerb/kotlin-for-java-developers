@@ -3,19 +3,34 @@ package mastermind
 data class Evaluation(val rightPosition: Int, val wrongPosition: Int)
 
 fun evaluateGuess(secret: String, guess: String): Evaluation {
-    var totalCorrect = 0
-    var totalIncorrect = 0
+    val correctLetters = mutableListOf<Char>()
+    val incorrectLetters = mutableListOf<Char>()
 
-    for ((index, secretLetter) in secret.withIndex()) {
-        val guessLetter = guess[index]
+    var secretWithoutPreviousCorrectLetters = secret
+
+    for ((index, guessLetter) in guess.withIndex()) {
+        val secretLetter = secret[index]
+        val repeatsOfLetterInSecret = secret.count { it == guessLetter }
+        val guessLetterCountedAsIncorrect = incorrectLetters.count { it == guessLetter }
 
         if (guessLetter == secretLetter) {
-            totalCorrect++
-        } else if (secretLetter in guess) {
-            totalIncorrect++
+            correctLetters.add(guessLetter)
+            secretWithoutPreviousCorrectLetters =
+                secretWithoutPreviousCorrectLetters.replaceFirst(guessLetter, '*')
+
+            if (guessLetterCountedAsIncorrect == repeatsOfLetterInSecret) {
+                incorrectLetters.remove(guessLetter)
+            }
+
+        } else if ((guessLetter in secretWithoutPreviousCorrectLetters)) {
+            if (guessLetterCountedAsIncorrect != repeatsOfLetterInSecret) {
+                incorrectLetters.add(guessLetter)
+            }
         }
 
     }
-    return Evaluation(totalCorrect, totalIncorrect)
+    return Evaluation(correctLetters.size, incorrectLetters.size)
 
 }
+
+

@@ -12,6 +12,7 @@ fun evaluateGuess(secret: String, guess: String): Evaluation {
         val secretLetter = secret[index]
         val repeatsOfLetterInSecret = secret.count { it == guessLetter }
         val guessLetterCountedAsIncorrect = incorrectLetters.count { it == guessLetter }
+        val guessLetterCountedAsCorrect = correctLetters.count { it == guessLetter }
 
         if (guessLetter == secretLetter) {
             correctLetters.add(guessLetter)
@@ -23,7 +24,7 @@ fun evaluateGuess(secret: String, guess: String): Evaluation {
             }
 
         } else if ((guessLetter in secretWithoutPreviousCorrectLetters)) {
-            if (guessLetterCountedAsIncorrect != repeatsOfLetterInSecret) {
+            if (guessLetterCountedAsIncorrect + guessLetterCountedAsCorrect != repeatsOfLetterInSecret) {
                 incorrectLetters.add(guessLetter)
             }
         }

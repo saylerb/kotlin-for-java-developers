@@ -38,7 +38,7 @@ class TestMastermindRepeatedLetters {
     fun test10() = testEvaluation("AABC", "AEFD", 1, 0)
 
     @Test
-    fun test11() = testEvaluation("DCFC", "ABEC", 1, 0)
+    fun test11() = testEvaluation("DCFC", "ABEC", 1, 0  )
 
     @Test
     fun test12() = testEvaluation("FDCD", "FBAD", 2, 0)
